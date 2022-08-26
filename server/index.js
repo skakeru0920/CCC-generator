@@ -10,8 +10,9 @@ const app = express();
 app.use(express.json());
 
 app.get("/img", async (req, res) => {
-	const img = await db.select().from(IMAGES).where({ id: 1 });
-	res.send(img);
+	const img = await db.select().from(IMAGES).where({ id: 2 }).first();
+	console.log("server img was calling", img);
+	res.json(img);
 });
 
 app.get("/random", async (req, res) => {
@@ -19,7 +20,7 @@ app.get("/random", async (req, res) => {
 		.get("https://source.unsplash.com/random")
 		.then((res) => res.request.res.responseUrl);
 	console.log(randomImg, "RANOM IMGAEW");
-	res.send(randomImg);
+	res.json(randomImg);
 });
 
 app.listen(PORT, () => {
