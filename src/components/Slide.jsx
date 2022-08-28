@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Slider.css";
 
+const randomWordWikipedia = require("random-word-wikipedia");
+
 export default function Slide() {
 	const DEFAULT =
 		"https://lh3.googleusercontent.com/pw/AL9nZEUGpXiX63tlViv3Du6fCPXUapy6xNN03JbI3awcQwRIQZBmW3wNmUJiiIpYnLwZ6UbtlYcN8-2jAfvIq0HdFF-BgCTqKkmgVhV_ZXXaq3PChww6RiIAPY9c4U3S2qBdt6U3q5Avoil7nVOkjdUHzmU=w1257-h838-no";
@@ -29,8 +31,48 @@ export default function Slide() {
 		setCount(1);
 	};
 
-	const createTitle = () => {
-		let string = "今日\nの\n晩御飯";
+	const getRandomWord = async () => {
+		const words = [];
+		// import from https://www.mediawiki.org/wiki/API:Random/ja#JavaScript
+		var url = "https://ja.wikipedia.org/w/api.php";
+		var params = {
+			action: "query",
+			format: "json",
+			list: "random",
+			rnlimit: "5",
+		};
+
+		url = url + "?origin=*";
+		Object.keys(params).forEach(function (key) {
+			url += "&" + key + "=" + params[key];
+		});
+
+		await fetch(url)
+			.then(function (response) {
+				return response.json();
+			})
+			.then(function (response) {
+				var randoms = response.query.random;
+				for (var r in randoms) {
+					words.push(randoms[r].title);
+					// console.log(randoms[r].title);
+				}
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		console.log(words, "randamuwa-dodayo");
+		return words;
+	};
+
+	const createTitle = async () => {
+		const list = await getRandomWord();
+		let string = `${list[0]} の ${list[4]}`;
+		// console.log(randomWordWikipedia());
+		// randomWordWikipedia().then(console.log);
+		// randomWordWikipedia("ja", 2).then(console.log);
+
+		// console.log(random, "RANDOM");
 		setTitle(string);
 	};
 	const waitShort = () => {
