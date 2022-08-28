@@ -14,8 +14,11 @@ export default function Slide() {
 	const [toId, setToId] = useState(0);
 
 	const fetchImg = async () => {
-		const img = (await axios.get("/img")).data.image_url;
-		// const img = (await axios.get("/random")).data;
+		// dbからランダムな画像取得
+		// const img = (await axios.get("/img")).data.image_url;
+
+		// unsplushからランダム画像を取得
+		const img = (await axios.get("/random")).data;
 		console.log(img, "fetchImg");
 		setUrl(img);
 	};
