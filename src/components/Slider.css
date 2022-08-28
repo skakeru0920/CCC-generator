@@ -1,0 +1,24 @@
+.display-slide {
+	height: 500px;
+	border: outset 10px #999933;
+	padding: 15px;
+	text-align: center;
+	background-color: #999999;
+	width: 750px;
+	margin: 0 auto;
+}
+
+.title {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	width: 80%;
+	height: 3.2rem;
+	font-size: 5em;
+}
+/* .show-count {
+	display: none;
+} */
