@@ -2,12 +2,29 @@ require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
 const db = require("./knex");
+const path = require("path");
 
 const PORT = process.env.PORT || 9000;
 const IMAGES = "images";
 const app = express();
 
+(async () => {
+	try {
+		console.log("Running migrations...");
+		await db.migrate.latest();
+
+		console.log("Starting express...");
+
+		app.listen(PORT, () => {
+			console.log(`App listening on port ${PORT}`);
+		});
+	} catch (err) {
+		console.error("Error starting app!", err);
+		process.exit(-1);
+	}
+})();
 app.use(express.json());
+app.use(express.static(path.resolve(__dirname, "..", "build")));
 
 app.get("/img", async (req, res) => {
 	const count = (await db(IMAGES).count("id").first()).count;
@@ -31,8 +48,4 @@ app.get("/random", async (req, res) => {
 	await db(IMAGES).insert({ image_url: randomImg });
 	console.log(randomImg, "RANOM IMGAEW");
 	res.json(randomImg);
-});
-
-app.listen(PORT, () => {
-	console.log(`App listening on port ${PORT}`);
 });
