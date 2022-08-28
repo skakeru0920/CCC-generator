@@ -19,6 +19,12 @@
 	height: 3.2rem;
 	font-size: 2em;
 }
-/* .show-count {
+
+.buttons > button {
+	padding: 10px;
+	margin: 10px;
+	width: 100px;
+}
+.show-count {
 	display: none;
-} */
+}

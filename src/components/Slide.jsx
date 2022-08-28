@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Slider.css";
 
-const randomWordWikipedia = require("random-word-wikipedia");
-
 export default function Slide() {
 	const DEFAULT =
 		"https://lh3.googleusercontent.com/pw/AL9nZEUGpXiX63tlViv3Du6fCPXUapy6xNN03JbI3awcQwRIQZBmW3wNmUJiiIpYnLwZ6UbtlYcN8-2jAfvIq0HdFF-BgCTqKkmgVhV_ZXXaq3PChww6RiIAPY9c4U3S2qBdt6U3q5Avoil7nVOkjdUHzmU=w1257-h838-no";
@@ -13,6 +11,7 @@ export default function Slide() {
 	const [url, setUrl] = useState(DEFAULT);
 	const [count, setCount] = useState(0);
 	const [title, setTitle] = useState("");
+	const [toId, setToId] = useState(0);
 
 	const fetchImg = async () => {
 		const img = (await axios.get("/img")).data.image_url;
@@ -20,12 +19,6 @@ export default function Slide() {
 		console.log(img, "fetchImg");
 		setUrl(img);
 	};
-
-	// async function getUrl() {
-	// 	const response = await fetch("https://source.unsplash.com/random");
-	// 	const url = response.url;
-	// 	// setUrl(url);
-	// }
 
 	const start = () => {
 		setCount(1);
@@ -68,24 +61,24 @@ export default function Slide() {
 	const createTitle = async () => {
 		const list = await getRandomWord();
 		let string = `${list[0]} の ${list[4]}`;
-		// console.log(randomWordWikipedia());
-		// randomWordWikipedia().then(console.log);
-		// randomWordWikipedia("ja", 2).then(console.log);
-
-		// console.log(random, "RANDOM");
 		setTitle(string);
 	};
+
 	const waitShort = () => {
-		setTimeout(() => {
-			setCount(count + 1);
-		}, 3000);
+		setToId(
+			setTimeout(() => {
+				setCount(count + 1);
+			}, 3000)
+		);
 	};
 
 	// スライドの画像が表示される時間（30秒に設定？）
 	const waitLong = () => {
-		setTimeout(() => {
-			setCount(count + 1);
-		}, 5000);
+		setToId(
+			setTimeout(() => {
+				setCount(count + 1);
+			}, 5000)
+		);
 	};
 
 	useEffect(() => {
@@ -108,8 +101,12 @@ export default function Slide() {
 			<div className="show-count">Slide display here {count}</div>
 			<div className="buttons">
 				<button onClick={() => start()}>START</button>
+				<button onClick={() => clearInterval(toId)}>STOP</button>
+				<button onClick={() => setCount(count + 1)}>NEXT</button>
 				{count === 0 && <button onClick={() => createTitle()}>TITLE</button>}
 			</div>
+			<h2 className=" prosessing">{count !== 0 && title}</h2>
+
 			<div className="display-slide">
 				<h2 className="title">{count === 0 && title}</h2>
 				<img
@@ -117,7 +114,6 @@ export default function Slide() {
 					className="slide-img"
 					alt="slide-image via urlstate"
 					height={"500px"}
-					// max-width={"750px"}
 				/>
 			</div>
 		</section>
