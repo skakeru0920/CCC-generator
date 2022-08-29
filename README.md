@@ -7,6 +7,8 @@
 
 ccc-generator は名前の通り CCC のスライドを作成するアプリケーションです
 
+https://ccc-generator-production.herokuapp.com/
+
 ## CCC とは
 
 Code Chrysalis Caraoke の略です。
